@@ -8,7 +8,7 @@
   <style>
     body {
       font-family: 'Arial', sans-serif;
-      background: linear-gradient(135deg, #070707, #1f1f1f);
+      background: linear-gradient(135deg, #000000, #1a1a1a);
       margin: 0;
       padding: 0;
       color: #ffffff;
@@ -75,7 +75,7 @@
       pointer-events: none;
       background: url('https://cdn.pixabay.com/photo/2021/08/18/10/03/confetti-6554399_960_720.png') repeat-x top center;
       animation: flutuar 12s linear infinite;
-      opacity: 0.4;
+      opacity: 0.6;
     }
 
     @keyframes flutuar {
@@ -136,7 +136,7 @@
 
       if (!chave) {
         resultado.innerHTML = `
-          <div style="text-align: center; padding: 20px; background: #ffe6e6; border: 2px solid #e57373; border-radius: 12px;">
+          <div style="text-align: center; padding: 20px; background: #ffe6e6; border: 2px solid #e57373; border-radius: 12px; color: #000;">
             <h2 style="color: #c62828;">❌ Por favor, insira uma chave válida</h2>
           </div>
         `;
@@ -161,9 +161,9 @@
           if (chave_planilha === chave) {
             document.body.insertAdjacentHTML('beforeend', '<div class="baloes"></div>');
             resultado.innerHTML = `
-              <div style="text-align: center; padding: 30px; background: #e9fff4; border: 2px solid #2ecc71; border-radius: 16px; color: #0e4429;">
+              <div style="text-align: center; padding: 30px; background: #e0fff1; border: 2px solid #27ae60; border-radius: 16px; color: #000;">
                 <h2 style="color: #27ae60;">✅ Certificado Válido</h2>
-                <p><strong>${nome}</strong></p>
+                <p style="font-weight: bold; font-size: 18px;">${nome}</p>
                 <p>Concluiu o curso: <strong>${curso}</strong></p>
                 <p>Data de conclusão: <strong>${data_emissao}</strong></p>
                 <div style="margin-top: 20px;"><img src='https://cdn-icons-png.flaticon.com/512/190/190411.png' alt='Selo de autenticidade' width='80'/></div>
@@ -176,7 +176,7 @@
 
         if (!encontrado) {
           resultado.innerHTML = `
-            <div style="text-align: center; padding: 20px; background: #ffe6e6; border: 2px solid #e57373; border-radius: 12px;">
+            <div style="text-align: center; padding: 20px; background: #ffe6e6; border: 2px solid #e57373; border-radius: 12px; color: #000;">
               <h2 style="color: #c62828;">❌ Certificado não encontrado</h2>
               <p>Verifique a chave digitada ou entre em contato com o emissor.</p>
             </div>
@@ -184,7 +184,7 @@
         }
       } catch (e) {
         resultado.innerHTML = `
-          <div style="text-align: center; padding: 20px; background: #fffde7; border: 2px solid #fdd835; border-radius: 12px;">
+          <div style="text-align: center; padding: 20px; background: #fffde7; border: 2px solid #fdd835; border-radius: 12px; color: #000;">
             <h2 style="color: #f9a825;">⚠️ Erro ao validar</h2>
             <p>Tente novamente em instantes.</p>
           </div>
