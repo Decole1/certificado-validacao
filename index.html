@@ -4,7 +4,8 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Validação de Certificado - Decole Educacional</title>
-  <link rel="icon" type="image/png" href="https://i.ibb.co/pdzFGfS/favicon-decole.png" />
+  <!-- Substitua o link do favicon por um que esteja disponível ou remova esta linha -->
+  <link rel="icon" type="image/png" href="https://example.com/favicon.png" />
   <style>
     body {
       font-family: 'Arial', sans-serif;
@@ -124,73 +125,4 @@
       <a href="https://decole.co" target="_blank" rel="noopener noreferrer">Site Oficial</a> |
       <a href="https://www.instagram.com/decolecontabildigital/" target="_blank" rel="noopener noreferrer">Instagram</a> |
       <a href="https://wa.me/5508005803080" target="_blank" rel="noopener noreferrer">WhatsApp: 0800 580 3080</a>
-    </p>
-  </footer>
-
-  <script>
-    document.getElementById('btn-validar').addEventListener('click', validarCertificado);
-
-    async function validarCertificado() {
-      const chave = document.getElementById('input-chave').value.trim();
-      const resultado = document.getElementById('resultado-validacao');
-
-      if (!chave) {
-        resultado.innerHTML = `
-          <div style="text-align: center; padding: 20px; background: #ffe6e6; border: 2px solid #e57373; border-radius: 12px; color: #000;">
-            <h2 style="color: #c62828;">❌ Por favor, insira uma chave válida</h2>
-          </div>
-        `;
-        return;
-      }
-
-      resultado.innerHTML = `
-        <div style="text-align: center; padding: 20px; background: #333; border: 2px solid #888; border-radius: 12px;">
-          <h3 style="color: #ddd;">🔎 Verificando certificado...</h3>
-        </div>
-      `;
-
-      try {
-        const res = await fetch("https://docs.google.com/spreadsheets/d/e/2PACX-1vR9V30aB2G1oyLILEaD1rlo3H8rOARS-HfiHiT50ZBqCzLt6p4ijaGbfVgrTYDJS50TfOcMBTsOtuhb/pub?gid=1982449420&single=true&output=csv");
-        const csv = await res.text();
-        const linhas = csv.split("\n").slice(1);
-
-        let encontrado = false;
-
-        for (let linha of linhas) {
-          const [nome, curso, data_emissao, chave_planilha] = linha.trim().split(",");
-          if (chave_planilha === chave) {
-            document.body.insertAdjacentHTML('beforeend', '<div class="baloes"></div>');
-            resultado.innerHTML = `
-              <div style="text-align: center; padding: 30px; background: #e0fff1; border: 2px solid #27ae60; border-radius: 16px; color: #000;">
-                <h2 style="color: #27ae60;">✅ Certificado Válido</h2>
-                <p style="font-weight: bold; font-size: 18px;">${nome}</p>
-                <p>Concluiu o curso: <strong>${curso}</strong></p>
-                <p>Data de conclusão: <strong>${data_emissao}</strong></p>
-                <div style="margin-top: 20px;"><img src='https://cdn-icons-png.flaticon.com/512/190/190411.png' alt='Selo de autenticidade' width='80'/></div>
-              </div>
-            `;
-            encontrado = true;
-            break;
-          }
-        }
-
-        if (!encontrado) {
-          resultado.innerHTML = `
-            <div style="text-align: center; padding: 20px; background: #ffe6e6; border: 2px solid #e57373; border-radius: 12px; color: #000;">
-              <h2 style="color: #c62828;">❌ Certificado não encontrado</h2>
-              <p>Verifique a chave digitada ou entre em contato com o emissor.</p>
-            </div>
-          `;
-        }
-      } catch (e) {
-        resultado.innerHTML = `
-          <div style="text-align: center; padding: 20px; background: #fffde7; border: 2px solid #fdd835; border-radius: 12px; color: #000;">
-            <h2 style="color: #f9a825;">⚠️ Erro ao validar</h2>
-            <p>Tente novamente em instantes.</p>
-          </div>
-        `;
-      }
-    }
-  </script>
-</body>
-</html>
+    </p
