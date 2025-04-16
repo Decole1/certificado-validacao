@@ -113,7 +113,7 @@
     <p>Insira a chave do certificado para validar:</p>
     <input type="text" id="input-chave" placeholder="Ex: abc123xyz" aria-label="Chave do certificado">
     <br>
-    <button id="btn-validar" aria-label="Botão para validar certificado">Validar</button>
+    <button id="btn-validar" onclick="validarCertificado()">Validar</button>
   </header>
 
   <div id="resultado-validacao" aria-live="polite"></div>
@@ -121,22 +121,20 @@
   <footer>
     <p>© 2025 Decole Educacional. Todos os direitos reservados.</p>
     <p>
-      <a href="https://decole.co" target="_blank" rel="noopener noreferrer">Site Oficial</a> |
-      <a href="https://www.instagram.com/decolecontabildigital/" target="_blank" rel="noopener noreferrer">Instagram</a> |
-      <a href="https://wa.me/5508005803080" target="_blank" rel="noopener noreferrer">WhatsApp: 0800 580 3080</a>
+      <a href="https://decole.co" target="_blank">Site Oficial</a> |
+      <a href="https://www.instagram.com/decolecontabildigital/" target="_blank">Instagram</a> |
+      <a href="https://wa.me/5508005803080" target="_blank">WhatsApp: 0800 580 3080</a>
     </p>
   </footer>
 
   <script>
-    document.getElementById('btn-validar').addEventListener('click', validarCertificado);
-
     async function validarCertificado() {
       const chave = document.getElementById('input-chave').value.trim();
       const resultado = document.getElementById('resultado-validacao');
 
       if (!chave) {
         resultado.innerHTML = `
-          <div style="text-align: center; padding: 20px; background: #ffe6e6; border: 2px solid #e57373; border-radius: 12px; color: #000;">
+          <div style="padding: 20px; background: #ffe6e6; border: 2px solid #e57373; border-radius: 12px; color: #000;">
             <h2 style="color: #c62828;">❌ Por favor, insira uma chave válida</h2>
           </div>
         `;
@@ -144,7 +142,7 @@
       }
 
       resultado.innerHTML = `
-        <div style="text-align: center; padding: 20px; background: #333; border: 2px solid #888; border-radius: 12px;">
+        <div style="padding: 20px; background: #333; border: 2px solid #888; border-radius: 12px;">
           <h3 style="color: #ddd;">🔎 Verificando certificado...</h3>
         </div>
       `;
@@ -161,12 +159,14 @@
           if (chave_planilha === chave) {
             document.body.insertAdjacentHTML('beforeend', '<div class="baloes"></div>');
             resultado.innerHTML = `
-              <div style="text-align: center; padding: 30px; background: #e0fff1; border: 2px solid #27ae60; border-radius: 16px; color: #000;">
+              <div style="padding: 30px; background: #e0fff1; border: 2px solid #27ae60; border-radius: 16px; color: #000;">
                 <h2 style="color: #27ae60;">✅ Certificado Válido</h2>
                 <p style="font-weight: bold; font-size: 18px;">${nome}</p>
                 <p>Concluiu o curso: <strong>${curso}</strong></p>
                 <p>Data de conclusão: <strong>${data_emissao}</strong></p>
-                <div style="margin-top: 20px;"><img src='https://cdn-icons-png.flaticon.com/512/190/190411.png' alt='Selo de autenticidade' width='80'/></div>
+                <div style="margin-top: 20px;">
+                  <img src='https://cdn-icons-png.flaticon.com/512/190/190411.png' alt='Selo de autenticidade' width='80'/>
+                </div>
               </div>
             `;
             encontrado = true;
@@ -176,7 +176,7 @@
 
         if (!encontrado) {
           resultado.innerHTML = `
-            <div style="text-align: center; padding: 20px; background: #ffe6e6; border: 2px solid #e57373; border-radius: 12px; color: #000;">
+            <div style="padding: 20px; background: #ffe6e6; border: 2px solid #e57373; border-radius: 12px; color: #000;">
               <h2 style="color: #c62828;">❌ Certificado não encontrado</h2>
               <p>Verifique a chave digitada ou entre em contato com o emissor.</p>
             </div>
@@ -184,7 +184,7 @@
         }
       } catch (e) {
         resultado.innerHTML = `
-          <div style="text-align: center; padding: 20px; background: #fffde7; border: 2px solid #fdd835; border-radius: 12px; color: #000;">
+          <div style="padding: 20px; background: #fffde7; border: 2px solid #fdd835; border-radius: 12px; color: #000;">
             <h2 style="color: #f9a825;">⚠️ Erro ao validar</h2>
             <p>Tente novamente em instantes.</p>
           </div>
