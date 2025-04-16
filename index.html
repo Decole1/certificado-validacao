@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=5.0" />
   <title>Validação de Certificado - Decole Educacional</title>
-  <link rel="icon" type="image/png" href="favicon-decole.png" />
+  <link rel="icon" type="image/png" href="favicondecole.png" />
   <style>
     body {
       font-family: 'Arial', sans-serif;
@@ -16,9 +16,9 @@
     }
 
     header {
-      background-color: #000;
+      background-color: #1a1919dc;
       padding: 40px 20px;
-      border-bottom: 3px solid #35f0d1;
+      border-bottom: 3px solid #777c7b;
     }
 
     header img {
@@ -65,18 +65,8 @@
       max-width: 600px;
     }
 
-    .baloes {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100vw;
-      height: 100vh;
-      z-index: 999;
-      pointer-events: none;
-      background: url('https://pixabay.com/pt/images/search/fogos%20de%20artif%c3%adcio/') repeat-x top center;
-      animation: flutuar 12s linear infinite;
-      opacity: 0.6;
-    }
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
 
     @keyframes flutuar {
       from { background-position-y: 100vh; }
@@ -84,7 +74,7 @@
     }
 
     footer {
-      background-color: #32f1e86c;
+      background-color: #6470706c;
       color: rgb(197, 2, 2);
       padding: 25px;
       margin-top: 60px;
@@ -134,7 +124,7 @@
 
       if (!chave) {
         resultado.innerHTML = `
-          <div style="padding: 10px; background: #ffe6e6; border: 2px solid #e57373; border-radius: 5px; color: #000;">
+          <div style="padding: 15px; background: #ffe6e6; border: 15px solid #e57373; border-radius: 10px; color: #000;">
             <h2 style="color: #c62828;">❌ Por favor, insira uma chave válida</h2>
           </div>
         `;
@@ -142,7 +132,7 @@
       }
 
       resultado.innerHTML = `
-        <div style="padding: 20px; background: #333; border: 2px solid #888; border-radius: 12px;">
+        <div style="padding: 30px; background: #333; border: 10px solid #888; border-radius: 18px;">
           <h3 style="color: #ddd;">🔎 Verificando seu certificado...</h3>
         </div>
       `;
@@ -160,7 +150,7 @@
             document.body.insertAdjacentHTML('beforeend', '<div class="baloes"></div>');
             resultado.innerHTML = `
               <div style="padding: 30px; background: #2F4F4F; border: 2px solid ##000000; border-radius: 16px; color: #000;">
-                <h2 style="color: #FFFAFA;"> A Decole Educacional te Parabeniza por investir em seu futuro conosco!! </h2>
+                <h2 style="color: #FFFAFA;"> A Decole Educacional te Parabeniza por investir em seu futuro conosco. </h2>
                 <p style="font-weight: bold; font-size: 18px;">${nome}</p>
                 <p>Concluiu o curso: <strong>${curso}</strong></p>
                 <p>Data de conclusão: <strong>${data_emissao}</strong></p>
