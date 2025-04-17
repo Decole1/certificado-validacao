@@ -2,9 +2,10 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=5.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Validação de Certificado - Decole Educacional</title>
   <link rel="icon" type="image/png" href="favicondecole.png" />
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
   <style>
     body {
       font-family: 'Arial', sans-serif;
@@ -22,7 +23,7 @@
     }
 
     header img {
-      height: 90px;
+      height: 230px;
       margin-bottom: 15px;
     }
 
@@ -42,7 +43,8 @@
       max-width: 400px;
       margin-top: 20px;
       border-radius: 6px;
-      border: 2cap solid #726d6d;
+      border: 2px solid #726d6d;
+      font-size: 16px;
     }
 
     button {
@@ -53,7 +55,8 @@
       color: white;
       border-radius: 30px;
       font-weight: bold;
-      cursor: w-resize;
+      cursor: pointer;
+      font-size: 16px;
     }
 
     button:hover {
@@ -64,9 +67,6 @@
       margin: 50px auto;
       max-width: 600px;
     }
-
-    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
-
 
     @keyframes flutuar {
       from { background-position-y: 100vh; }
@@ -98,10 +98,10 @@
 </head>
 <body>
   <header>
-    <img src="decole-logo.png" alt="Logo Decole Educacional" style="height: 230px;">
+    <img src="decole-logo.png" alt="Logo Decole Educacional">
     <h1>Ambiente de Validação de Certificado</h1>
     <p>Insira sua chave única do certificado para validar:</p>
-    <input type="text" id="input-chave" placeholder="Ex: abc123xyz" aria-label="Chave do certificado">
+    <input type="text" id="input-chave" placeholder="Ex: abc123xyz" onkeypress="if(event.key === 'Enter') validarCertificado()">
     <br>
     <button id="btn-validar" onclick="validarCertificado()">Validar</button>
   </header>
@@ -124,7 +124,7 @@
 
       if (!chave) {
         resultado.innerHTML = `
-          <div style="padding: 15px; background: #ffe6e6; border: 15px solid #e57373; border-radius: 10px; color: #000;">
+          <div style="padding: 15px; background: #ffe6e6; border: 2px solid #e57373; border-radius: 10px; color: #000;">
             <h2 style="color: #c62828;">❌ Por favor, insira uma chave válida</h2>
           </div>
         `;
@@ -132,7 +132,7 @@
       }
 
       resultado.innerHTML = `
-        <div style="padding: 30px; background: #333; border: 10px solid #888; border-radius: 18px;">
+        <div style="padding: 30px; background: #333; border: 2px solid #888; border-radius: 18px;">
           <h3 style="color: #ddd;">🔎 Verificando seu certificado...</h3>
         </div>
       `;
@@ -147,10 +147,10 @@
         for (let linha of linhas) {
           const [nome, curso, data_emissao, chave_planilha] = linha.trim().split(",");
           if (chave_planilha === chave) {
-            document.body.insertAdjacentHTML('beforeend', '<div class="baloes"></div>');
+            confetti();
             resultado.innerHTML = `
-              <div style="padding: 30px; background: #2F4F4F; border: 2px solid ##000000; border-radius: 16px; color: #000;">
-                <h2 style="color: #FFFAFA;"> A Decole Educacional te Parabeniza por investir em seu futuro conosco. </h2>
+              <div style="padding: 30px; background: #2F4F4F; border: 2px solid #000000; border-radius: 16px; color: #fff;">
+                <h2 style="color: #FFFAFA;">🎓 A Decole Educacional te Parabeniza por investir em seu futuro conosco.</h2>
                 <p style="font-weight: bold; font-size: 18px;">${nome}</p>
                 <p>Concluiu o curso: <strong>${curso}</strong></p>
                 <p>Data de conclusão: <strong>${data_emissao}</strong></p>
@@ -159,6 +159,7 @@
                 </div>
               </div>
             `;
+            resultado.scrollIntoView({ behavior: 'smooth' });
             encontrado = true;
             break;
           }
