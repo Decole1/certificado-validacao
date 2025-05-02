@@ -1,82 +1,210 @@
-<script>
-  async function validarCertificado() {
-    const chave = document.getElementById('input-chave').value.trim();
-    const resultado = document.getElementById('resultado-validacao');
-    const btnDownload = document.getElementById('btn-download');
-
-    // Oculta o botão no início da função
-    btnDownload.style.display = 'none';
-
-    if (!chave) {
-      resultado.innerHTML = `
-        <div style="padding: 15px; background: #ffe6e6; border: 2px solid #e57373; border-radius: 10px; color: #000;">
-          <h2 style="color: #c62828;">❌ Por favor, insira uma chave válida</h2>
-        </div>
-      `;
-      return;
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Validação de Certificado - Decole Educacional</title>
+  <link rel="icon" type="image/png" href="favicondecole.png" />
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+  <style>
+    body {
+      font-family: 'Arial', sans-serif;
+      background: linear-gradient(135deg, #000000, #1a1a1a);
+      margin: 0;
+      padding: 0;
+      color: #ffffff;
+      text-align: center;
     }
 
-    resultado.innerHTML = `
-      <div style="padding: 30px; background: #333; border: 2px solid #888; border-radius: 18px;">
-        <h3 style="color: #ddd;">🔎 Verificando seu certificado...</h3>
-      </div>
-    `;
+    header {
+      background-color: #1a1919dc;
+      padding: 40px 20px;
+      border-bottom: 3px solid #777c7b;
+    }
 
-    try {
-      const res = await fetch("https://docs.google.com/spreadsheets/d/e/2PACX-1vR9V30aB2G1oyLILEaD1rlo3H8rOARS-HfiHiT50ZBqCzLt6p4ijaGbfVgrTYDJS50TfOcMBTsOtuhb/pub?gid=1982449420&single=true&output=csv");
-      const csv = await res.text();
-      const linhas = csv.split("\n").slice(1);
+    header img {
+      height: 230px;
+      margin-bottom: 15px;
+    }
 
-      let encontrado = false;
+    h1 {
+      color: #ffffff;
+      font-size: 36px;
+      margin: 10px 0;
+    }
 
-      for (let linha of linhas) {
-        const [nome, curso, data_emissao, chave_planilha] = linha.trim().split(",");
+    p {
+      color: #cccccc;
+    }
 
-        if (chave_planilha === chave) {
-          confetti();
-          resultado.innerHTML = `
-            <div style="padding: 30px; background: #2F4F4F; border: 2px solid #000000; border-radius: 16px; color: #fff;">
-              <h2 style="color: #FFFAFA;">🎓 A Decole Educacional te Parabeniza por investir em seu futuro conosco.</h2>
-              <p style="font-weight: bold; font-size: 18px;">${nome}</p>
-              <p>Concluiu o curso: <strong>${curso}</strong></p>
-              <p>Data de conclusão: <strong>${data_emissao}</strong></p>
-              <div style="margin-top: 20px;">
-                <img src='https://cdn-icons-png.flaticon.com/512/190/190411.png' alt='Selo de autenticidade' width='80'/>
-              </div>
-            </div>
-          `;
+    input[type="text"] {
+      padding: 12px;
+      width: 90%;
+      max-width: 400px;
+      margin-top: 20px;
+      border-radius: 6px;
+      border: 2px solid #726d6d;
+      font-size: 16px;
+    }
 
-          // Checa se o arquivo existe antes de mostrar botão
-          const urlPDF = `certificados/${chave}.pdf`;
-          const existe = await fetch(urlPDF, { method: 'HEAD' });
+    button {
+      margin-top: 15px;
+      padding: 10px 14px;
+      border: none;
+      background-color: #f57a07;
+      color: white;
+      border-radius: 30px;
+      font-weight: bold;
+      cursor: pointer;
+      font-size: 16px;
+    }
 
-          if (existe.ok) {
-            btnDownload.href = urlPDF;
-            btnDownload.style.display = 'inline-block';
-          } else {
-            btnDownload.style.display = 'none';
-          }
+    button:hover {
+      background-color: #974b08;
+    }
 
-          encontrado = true;
-          break;
-        }
+    #resultado-validacao {
+      margin: 50px auto;
+      max-width: 600px;
+    }
+
+    #btn-download {
+      display: none;
+      margin-top: 20px;
+      padding: 12px 20px;
+      background-color: #28a745;
+      color: white;
+      font-weight: bold;
+      border-radius: 25px;
+      text-decoration: none;
+      display: inline-block;
+    }
+
+    footer {
+      background-color: #6470706c;
+      color: rgb(197, 2, 2);
+      padding: 25px;
+      margin-top: 60px;
+    }
+
+    footer a {
+      color: #dfcdbd;
+      margin: 0 12px;
+      text-decoration: none;
+    }
+
+    @media (max-width: 600px) {
+      input[type="text"] {
+        width: 95%;
+      }
+      h1 {
+        font-size: 26px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <img src="decole-logo.png" alt="Logo Decole Educacional">
+    <h1>Ambiente de Validação de Certificado</h1>
+    <p>Insira sua chave única do certificado para validar:</p>
+    <input type="text" id="input-chave" placeholder="Ex: abc123xyz" onkeypress="if(event.key === 'Enter') validarCertificado()">
+    <br>
+    <button id="btn-validar" onclick="validarCertificado()">Validar</button>
+  </header>
+
+  <div id="resultado-validacao" aria-live="polite"></div>
+
+  <a id="btn-download" href="#" download target="_blank">
+    📅 Baixar Certificado
+  </a>
+
+  <footer>
+    <p>© 2025 Decole Educacional. Todos os direitos reservados.</p>
+    <p>
+      <a href="https://decole.co" target="_blank">Site Oficial</a> |
+      <a href="https://www.instagram.com/decolecontabildigital/" target="_blank">Instagram</a> |
+      <a href="https://wa.me/5508005803080" target="_blank">WhatsApp: 0800 580 3080</a>
+    </p>
+  </footer>
+
+  <script>
+    async function validarCertificado() {
+      const chave = document.getElementById('input-chave').value.trim();
+      const resultado = document.getElementById('resultado-validacao');
+      const btnDownload = document.getElementById('btn-download');
+
+      btnDownload.style.display = 'none';
+
+      if (!chave) {
+        resultado.innerHTML = `
+          <div style="padding: 15px; background: #ffe6e6; border: 2px solid #e57373; border-radius: 10px; color: #000;">
+            <h2 style="color: #c62828;">❌ Por favor, insira uma chave válida</h2>
+          </div>
+        `;
+        return;
       }
 
-      if (!encontrado) {
+      resultado.innerHTML = `
+        <div style="padding: 30px; background: #333; border: 2px solid #888; border-radius: 18px;">
+          <h3 style="color: #ddd;">🔎 Verificando seu certificado...</h3>
+        </div>
+      `;
+
+      try {
+        const res = await fetch("https://docs.google.com/spreadsheets/d/e/2PACX-1vR9V30aB2G1oyLILEaD1rlo3H8rOARS-HfiHiT50ZBqCzLt6p4ijaGbfVgrTYDJS50TfOcMBTsOtuhb/pub?gid=1982449420&single=true&output=csv");
+        const csv = await res.text();
+        const linhas = csv.split("\n").slice(1);
+
+        let encontrado = false;
+
+        for (let linha of linhas) {
+          const [nome, curso, data_emissao, chave_planilha] = linha.trim().split(",");
+
+          if (chave_planilha === chave) {
+            confetti();
+            resultado.innerHTML = `
+              <div style="padding: 30px; background: #2F4F4F; border: 2px solid #000000; border-radius: 16px; color: #fff;">
+                <h2 style="color: #FFFAFA;">🎓 A Decole Educacional te Parabeniza por investir em seu futuro conosco.</h2>
+                <p style="font-weight: bold; font-size: 18px;">${nome}</p>
+                <p>Concluiu o curso: <strong>${curso}</strong></p>
+                <p>Data de conclusão: <strong>${data_emissao}</strong></p>
+                <div style="margin-top: 20px;">
+                  <img src='https://cdn-icons-png.flaticon.com/512/190/190411.png' alt='Selo de autenticidade' width='80'/>
+                </div>
+              </div>
+            `;
+
+            const urlPDF = `certificados/${chave}.pdf`;
+            const verificaPDF = await fetch(urlPDF, { method: 'HEAD' });
+            if (verificaPDF.ok) {
+              btnDownload.href = urlPDF;
+              btnDownload.style.display = 'inline-block';
+            }
+
+            resultado.scrollIntoView({ behavior: 'smooth' });
+            encontrado = true;
+            break;
+          }
+        }
+
+        if (!encontrado) {
+          resultado.innerHTML = `
+            <div style="padding: 20px; background: #ffe6e6; border: 2px solid #e57373; border-radius: 12px; color: #000;">
+              <h2 style="color: #c62828;">❌ Certificado não encontrado</h2>
+              <p>Verifique a chave digitada ou entre em contato com o emissor.</p>
+            </div>
+          `;
+        }
+      } catch (e) {
         resultado.innerHTML = `
-          <div style="padding: 20px; background: #ffe6e6; border: 2px solid #e57373; border-radius: 12px; color: #000;">
-            <h2 style="color: #c62828;">❌ Certificado não encontrado</h2>
-            <p>Verifique a chave digitada ou entre em contato com o emissor.</p>
+          <div style="padding: 20px; background: #fffde7; border: 2px solid #fdd835; border-radius: 12px; color: #000;">
+            <h2 style="color: #f9a825;">⚠️ Erro ao validar</h2>
+            <p>Tente novamente em instantes.</p>
           </div>
         `;
       }
-    } catch (e) {
-      resultado.innerHTML = `
-        <div style="padding: 20px; background: #fffde7; border: 2px solid #fdd835; border-radius: 12px; color: #000;">
-          <h2 style="color: #f9a825;">⚠️ Erro ao validar</h2>
-          <p>Tente novamente em instantes.</p>
-        </div>
-      `;
     }
-  }
-</script>
+  </script>
+</body>
+</html>
