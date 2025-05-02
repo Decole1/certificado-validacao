@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!DOCTYPE html> 
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8" />
@@ -68,9 +68,16 @@
       max-width: 600px;
     }
 
-    @keyframes flutuar {
-      from { background-position-y: 100vh; }
-      to { background-position-y: -200vh; }
+    #btn-download {
+      display: none;
+      margin-top: 20px;
+      padding: 12px 20px;
+      background-color: #28a745;
+      color: white;
+      text-decoration: none;
+      font-weight: bold;
+      border-radius: 25px;
+      display: inline-block;
     }
 
     footer {
@@ -107,6 +114,7 @@
   </header>
 
   <div id="resultado-validacao" aria-live="polite"></div>
+  <a id="btn-download" href="#" download target="_blank">📥 Baixar Certificado</a>
 
   <footer>
     <p>© 2025 Decole Educacional. Todos os direitos reservados.</p>
@@ -121,6 +129,9 @@
     async function validarCertificado() {
       const chave = document.getElementById('input-chave').value.trim();
       const resultado = document.getElementById('resultado-validacao');
+      const btnDownload = document.getElementById('btn-download');
+
+      btnDownload.style.display = 'none';
 
       if (!chave) {
         resultado.innerHTML = `
@@ -146,6 +157,7 @@
 
         for (let linha of linhas) {
           const [nome, curso, data_emissao, chave_planilha] = linha.trim().split(",");
+
           if (chave_planilha === chave) {
             confetti();
             resultado.innerHTML = `
@@ -160,28 +172,12 @@
               </div>
             `;
             resultado.scrollIntoView({ behavior: 'smooth' });
-            encontrado = true;
-            break;
-          }
-        }
 
-        if (!encontrado) {
-          resultado.innerHTML = `
-            <div style="padding: 20px; background: #ffe6e6; border: 2px solid #e57373; border-radius: 12px; color: #000;">
-              <h2 style="color: #c62828;">❌ Certificado não encontrado</h2>
-              <p>Verifique a chave digitada ou entre em contato com o emissor.</p>
-            </div>
-          `;
-        }
-      } catch (e) {
-        resultado.innerHTML = `
-          <div style="padding: 20px; background: #fffde7; border: 2px solid #fdd835; border-radius: 12px; color: #000;">
-            <h2 style="color: #f9a825;">⚠️ Erro ao validar</h2>
-            <p>Tente novamente em instantes.</p>
-          </div>
-        `;
-      }
-    }
-  </script>
-</body>
-</html>
+            // Link para download do certificado em PDF
+            const urlPDF = `certificados/${chave}.pdf`;
+
+            // Verifica se o PDF existe antes de exibir botão
+            fetch(urlPDF, { method: 'HEAD' }).then(response => {
+              if (response.ok) {
+                btnDownload.href = urlPDF;
+                btnDownload
