@@ -68,16 +68,9 @@
       max-width: 600px;
     }
 
-    #btn-download {
-      display: none;
-      margin-top: 20px;
-      padding: 12px 20px;
-      background-color: #28a745;
-      color: white;
-      font-weight: bold;
-      border-radius: 25px;
-      text-decoration: none;
-      display: inline-block;
+    @keyframes flutuar {
+      from { background-position-y: 100vh; }
+      to { background-position-y: -200vh; }
     }
 
     footer {
@@ -115,10 +108,6 @@
 
   <div id="resultado-validacao" aria-live="polite"></div>
 
-  <a id="btn-download" href="#" download target="_blank">
-    📅 Baixar Certificado
-  </a>
-
   <footer>
     <p>© 2025 Decole Educacional. Todos os direitos reservados.</p>
     <p>
@@ -132,9 +121,6 @@
     async function validarCertificado() {
       const chave = document.getElementById('input-chave').value.trim();
       const resultado = document.getElementById('resultado-validacao');
-      const btnDownload = document.getElementById('btn-download');
-
-      btnDownload.style.display = 'none';
 
       if (!chave) {
         resultado.innerHTML = `
@@ -160,7 +146,6 @@
 
         for (let linha of linhas) {
           const [nome, curso, data_emissao, chave_planilha] = linha.trim().split(",");
-
           if (chave_planilha === chave) {
             confetti();
             resultado.innerHTML = `
@@ -174,14 +159,6 @@
                 </div>
               </div>
             `;
-
-            const urlPDF = `certificados/${chave}.pdf`;
-            const verificaPDF = await fetch(urlPDF, { method: 'HEAD' });
-            if (verificaPDF.ok) {
-              btnDownload.href = urlPDF;
-              btnDownload.style.display = 'inline-block';
-            }
-
             resultado.scrollIntoView({ behavior: 'smooth' });
             encontrado = true;
             break;
