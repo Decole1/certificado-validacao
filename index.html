@@ -4,7 +4,7 @@
     const resultado = document.getElementById('resultado-validacao');
     const btnDownload = document.getElementById('btn-download');
 
-    // Oculta o botão sempre que uma nova validação começa
+    // Oculta o botão no início da função
     btnDownload.style.display = 'none';
 
     if (!chave) {
@@ -46,13 +46,11 @@
             </div>
           `;
 
-          resultado.scrollIntoView({ behavior: 'smooth' });
-
+          // Checa se o arquivo existe antes de mostrar botão
           const urlPDF = `certificados/${chave}.pdf`;
+          const existe = await fetch(urlPDF, { method: 'HEAD' });
 
-          // Verifica se o arquivo existe antes de mostrar botão
-          const arquivoExiste = await fetch(urlPDF, { method: 'HEAD' });
-          if (arquivoExiste.ok) {
+          if (existe.ok) {
             btnDownload.href = urlPDF;
             btnDownload.style.display = 'inline-block';
           } else {
