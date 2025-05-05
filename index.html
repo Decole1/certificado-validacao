@@ -68,11 +68,6 @@
       max-width: 600px;
     }
 
-    @keyframes flutuar {
-      from { background-position-y: 100vh; }
-      to { background-position-y: -200vh; }
-    }
-
     footer {
       background-color: #6470706c;
       color: rgb(197, 2, 2);
@@ -157,6 +152,9 @@
                 <div style="margin-top: 20px;">
                   <img src='https://cdn-icons-png.flaticon.com/512/190/190411.png' alt='Selo de autenticidade' width='80'/>
                 </div>
+                <button onclick="baixarCertificado('${chave}')" style="margin-top: 25px; padding: 12px 20px; font-size: 16px; border-radius: 30px; background-color: #f57a07; color: white; border: none; cursor: pointer;">
+                  📥 Baixar Certificado
+                </button>
               </div>
             `;
             resultado.scrollIntoView({ behavior: 'smooth' });
@@ -181,6 +179,16 @@
           </div>
         `;
       }
+    }
+
+    function baixarCertificado(chave) {
+      const url = `https://raw.githubusercontent.com/Decole1/certificado-validacao/main/certificados/${chave}.pdf`;
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = `${chave}.pdf`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
     }
   </script>
 </body>
